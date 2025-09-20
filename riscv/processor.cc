@@ -44,6 +44,7 @@ processor_t::processor_t(const char* isa_str, const char* priv_str,
 {
   VU.p = this;
   TM.proc = this;
+  fpu.SetupToRiscv();
 
 #ifndef HAVE_INT128
   if (isa.has_any_vector()) {

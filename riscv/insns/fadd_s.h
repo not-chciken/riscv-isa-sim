@@ -1,5 +1,7 @@
 require_either_extension('F', EXT_ZFINX);
 require_fp;
-softfloat_roundingMode = RM;
-WRITE_FRD_F(f32_add(FRS1_F, FRS2_F));
-set_fp_exceptions;
+p->fpu.rounding_mode = (FloppyFloat::RoundingMode) RM;
+float result;
+FLOPPY_FLOAT_FUNC_2(result, p->fpu.rounding_mode, p->fpu.Add, float, bc<float>(FRS1_F), bc<float>(FRS2_F))
+WRITE_FRD_F(bc<float32_t>(result));
+set_fp_exceptions_ff

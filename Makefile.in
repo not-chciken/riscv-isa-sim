@@ -94,9 +94,9 @@ VPATH := $(addprefix $(src_dir)/, $(sprojs_enabled))
 # highest.
 
 default-CFLAGS   := -DPREFIX=\"$(prefix)\" -Wall -Wno-nonportable-include-path -g -O2 -fPIC
-default-CXXFLAGS := $(default-CFLAGS) -std=c++2a
+default-CXXFLAGS := $(default-CFLAGS) -std=c++23
 
-mcppbs-CPPFLAGS := @CPPFLAGS@
+mcppbs-CPPFLAGS := @CPPFLAGS@ -I$(src_dir)/FloppyFloat/src
 mcppbs-CFLAGS   := $(default-CFLAGS) @CFLAGS@
 mcppbs-CXXFLAGS := $(default-CXXFLAGS) @CXXFLAGS@
 
@@ -118,12 +118,12 @@ COMPILE_C     := $(CC) -MMD -MP $(all-c-flags) $(sprojs_include)
 #  - LDFLAGS : Flags for the linker (eg. -L)
 #  - LIBS    : Library flags (eg. -l)
 
-mcppbs-LDFLAGS := @LDFLAGS@ @BOOST_LDFLAGS@
+mcppbs-LDFLAGS := @LDFLAGS@ @BOOST_LDFLAGS@ -L$(src_dir)/FloppyFloat/build
 all-link-flags := $(mcppbs-LDFLAGS) $(LDFLAGS)
 
 comma := ,
 LD            := $(CXX)
-LIBS          := @LIBS@ @BOOST_ASIO_LIB@ @BOOST_REGEX_LIB@
+LIBS          := @LIBS@ @BOOST_ASIO_LIB@ @BOOST_REGEX_LIB@ $(src_dir)/FloppyFloat/build/libFloppyFloat.a
 LINK          := $(LD) -L. $(all-link-flags) -Wl,-rpath,$(install_libs_dir) $(patsubst -L%,-Wl$(comma)-rpath$(comma)%,$(filter -L%,$(LDFLAGS)))
 
 # Library creation

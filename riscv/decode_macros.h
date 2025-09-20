@@ -217,6 +217,14 @@ static inline bool is_aligned(const unsigned val, const unsigned pos)
     softfloat_exceptionFlags = 0; \
   } while (0);
 
+#define set_fp_exceptions_ff \
+  do { \
+    if (p->fpu.flags_dirty) { \
+      p->fpu.flags_dirty = false; \
+      raise_fp_exceptions(p->fpu.GetFlagsRiscv()); \
+    } \
+  } while (0);
+
 #define sext32(x) ((sreg_t)(int32_t)(x))
 #define zext32(x) ((reg_t)(uint32_t)(x))
 #define sext(x, pos) (((sreg_t)(x) << (64 - (pos))) >> (64 - (pos)))
